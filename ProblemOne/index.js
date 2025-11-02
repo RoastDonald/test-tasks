@@ -56,6 +56,7 @@ var arr = [
 ];
 
 function mutateArray(a) {
+  const GUEST_TYPE = "guest";
   const mutate = (obj) => {
     const flatten = Object.entries(obj).reduce((acc, [key, value]) => {
       if (typeof value === "object") {
@@ -75,7 +76,7 @@ function mutateArray(a) {
     return flatten;
   };
 
-  return a.map(mutate);
+  return a.map(mutate).filter((entity) => entity.guest_type === GUEST_TYPE);
 }
 
 $(document).ready(function () {
