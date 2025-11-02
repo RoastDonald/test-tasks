@@ -57,26 +57,39 @@ var arr = [
 
 function mutateArray(a) {
   const GUEST_TYPE = "guest";
+
+  //1
   const mutate = (obj) => {
-    const flatten = Object.entries(obj).reduce((acc, [key, value]) => {
+    const flatten = Object.entries(obj).reduce((newEntity, [key, value]) => {
       if (typeof value === "object") {
-        Object.assign(acc, value);
+        Object.assign(newEntity, value);
       } else {
-        acc[key] = value;
+        newEntity[key] = value;
       }
-      return acc;
+      return newEntity;
     }, {});
 
+    //2
     for (const [key, value] of Object.entries(flatten)) {
       if (Array.isArray(value)) {
-        flatten[key] = value.reduce((acc, number) => acc + number, 0);
+        flatten[key] = value.reduce((counter, number) => counter + number, 0);
       }
     }
 
     return flatten;
   };
+  //3
+  const filterByGuestType = (entity) =>
+    [GUEST_TYPE].includes(entity.guest_type);
 
-  return a.map(mutate).filter((entity) => entity.guest_type === GUEST_TYPE);
+  //4
+  const sortByName = (left, right) => {
+    const lastNameCompare = left.last_name.localeCompare(right.last_name);
+    if (lastNameCompare !== 0) return lastNameCompare;
+    return left.first_name.localeCompare(right.first_name);
+  };
+
+  return a.map(mutate).filter(filterByGuestType).sort(sortByName);
 }
 
 $(document).ready(function () {
