@@ -66,6 +66,12 @@ function mutateArray(a) {
       return acc;
     }, {});
 
+    for (const [key, value] of Object.entries(flatten)) {
+      if (Array.isArray(value)) {
+        flatten[key] = value.reduce((acc, number) => acc + number, 0);
+      }
+    }
+
     return flatten;
   };
 
