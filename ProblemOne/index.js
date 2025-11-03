@@ -55,41 +55,21 @@ var arr = [
   },
 ];
 
-function mutateArray(a) {
-  const GUEST_TYPE = "guest";
-
-  //1
-  const mutate = (obj) => {
-    const flatten = Object.entries(obj).reduce((newEntity, [key, value]) => {
-      if (typeof value === "object") {
-        Object.assign(newEntity, value);
-      } else {
-        newEntity[key] = value;
-      }
-      return newEntity;
-    }, {});
-
-    //2
-    for (const [key, value] of Object.entries(flatten)) {
-      if (Array.isArray(value)) {
-        flatten[key] = value.reduce((counter, number) => counter + number, 0);
-      }
-    }
-
-    return flatten;
-  };
-  //3
-  const filterByGuestType = (entity) =>
-    [GUEST_TYPE].includes(entity.guest_type);
-
-  //4
-  const sortByName = (left, right) => {
-    const lastNameCompare = left.last_name.localeCompare(right.last_name);
-    if (lastNameCompare !== 0) return lastNameCompare;
-    return left.first_name.localeCompare(right.first_name);
-  };
-
-  return a.map(mutate).filter(filterByGuestType).sort(sortByName);
+function mutateArray(arr) {
+  return arr
+    .map(({ guest_type, first_name, last_name, guest_booking }) => ({
+      guest_type,
+      first_name,
+      last_name,
+      room_no: guest_booking.room_no,
+      some_total: guest_booking.some_array.reduce((a, b) => a + b, 0),
+    }))
+    .filter(({ guest_type }) => guest_type === "guest")
+    .sort(
+      (a, b) =>
+        a.last_name.localeCompare(b.last_name) ||
+        a.first_name.localeCompare(b.first_name)
+    );
 }
 
 $(document).ready(function () {
