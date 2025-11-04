@@ -1,7 +1,11 @@
-import { CalculatorState } from "./useCalculatorState";
+const formatNumber = (number: number): string => {
+  const str = number.toString();
 
-const formatNumber = (number: number): string =>
-  number.toString().replace(/\.?0+$/, "");
+  if (str.includes(".")) {
+    return str.replace(/\.?0+$/, "");
+  }
+  return str;
+};
 
 export const useCalculatorOperations = () => {
   const calculate = (

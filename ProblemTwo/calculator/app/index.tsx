@@ -16,6 +16,21 @@ const Calculator = () => {
     handlePercentage,
   } = useCalculator();
 
+  const getButtonTestID = (title: string): string => {
+    const titleMap: Record<string, string> = {
+      AC: "ac",
+      "+/-": "toggle-sign",
+      "%": "percentage",
+      "÷": "divide",
+      "×": "multiply",
+      "-": "minus",
+      "+": "plus",
+      ".": "decimal",
+      "=": "equals",
+    };
+    return titleMap[title] || title.toLowerCase();
+  };
+
   const buttons = [
     { title: "AC", type: "function" as const, onPress: handleClear },
     { title: "+/-", type: "function" as const, onPress: handleToggleSign },
@@ -96,13 +111,18 @@ const Calculator = () => {
   ];
 
   return (
-    <View style={styles.container}>
-      <View style={styles.display}>
-        <Text style={styles.text} adjustsFontSizeToFit numberOfLines={1}>
+    <View style={styles.container} testID="calculator-container">
+      <View style={styles.display} testID="calculator-display-container">
+        <Text
+          testID="calculator-display"
+          style={styles.text}
+          adjustsFontSizeToFit
+          numberOfLines={1}
+        >
           {displayValue}
         </Text>
       </View>
-      <View style={styles.keypad}>
+      <View style={styles.keypad} testID="calculator-keypad">
         {buttons.map((button, index) => (
           <Button
             key={index}
@@ -110,6 +130,7 @@ const Calculator = () => {
             type={button.type}
             onPress={button.onPress}
             doubleWidth={button.doubleWidth}
+            testID={`button-${getButtonTestID(button.title)}`}
           />
         ))}
       </View>

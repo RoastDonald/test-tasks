@@ -10,9 +10,16 @@ interface ButtonProps {
   type: "function" | "operator" | "number";
   onPress: () => void;
   doubleWidth?: boolean;
+  testID?: string;
 }
 
-const Button = ({ title, type, onPress, doubleWidth = false }: ButtonProps) => {
+const Button = ({
+  title,
+  type,
+  onPress,
+  doubleWidth = false,
+  testID,
+}: ButtonProps) => {
   const backgroundColor =
     type === "operator" ? Colors.btnRight : Colors.btnLight;
   const textColor = type === "operator" ? Colors.white : Colors.black;
@@ -20,6 +27,7 @@ const Button = ({ title, type, onPress, doubleWidth = false }: ButtonProps) => {
 
   return (
     <TouchableOpacity
+      testID={testID}
       style={[
         styles.button,
         {
